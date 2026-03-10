@@ -1,6 +1,7 @@
 addListeners();
 
 let object;
+let objectMoveAndHide;
 let fadeInResetter = null;
 let fadeOutResetter = null;
 let scaleResetter1 = null;
@@ -65,7 +66,16 @@ function addListeners() {
     document.getElementById('moveAndHidePlay')
         .addEventListener('click', function () {
             const block = document.getElementById('moveAndHideBlock');
-            animator.moveAndHide(block, 1000);
+            objectMoveAndHide = animator.moveAndHide(block, 1000);
+        });
+
+    document.getElementById('moveAndHideReset')
+        .addEventListener('click', function () {
+            const block = document.getElementById('moveAndHideBlock');
+            if (objectMoveAndHide)
+            {
+                objectMoveAndHide.reset();
+            }
         });
 
     document.getElementById('showAndHidePlay')
@@ -150,6 +160,13 @@ function animaster() {
         moveAndHide(element, duration) {
             this.move(element, duration * 2 / 5, { x: 100, y: 20 });
             this.fadeOut(element, duration * 3 / 5);
+
+            return {
+                reset(){
+                    resetFadeOut(element);
+                    resetMoveAndScale(element);
+                }
+            }
         },
 
         showAndHide(element, duration) {
