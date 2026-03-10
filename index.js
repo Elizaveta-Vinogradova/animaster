@@ -40,7 +40,7 @@ function addListeners() {
     document.getElementById('movePlay')
         .addEventListener('click', function () {
             const block = document.getElementById('moveBlock');
-            scaleResetter1 = animator.move(block, 1000, { x: 100, y: 10 });
+            animaster().addMove(500, {x: 20, y:20}).play(block);
         });
 
     document.getElementById('moveAndScaleReset1')
@@ -119,6 +119,27 @@ function animaster() {
     }
 
     return {
+        _steps : [],
+        addMove(duration, transform) {
+            this._steps.push({
+                title : 'move',
+                duration : duration,
+                params : transform
+            })
+            return this;
+        },
+
+        play(element){
+            this._steps.forEach((command) => {
+                switch(command.title){
+                    case 'move':
+                        this.move(element, command.duration, command.params);
+                        break;
+                    default:
+                        break;
+                }
+            });
+        },
         move(element, duration, translation) {
             element.style.transitionDuration = `${duration}ms`;
             element.style.transform = getTransform(translation, null);
